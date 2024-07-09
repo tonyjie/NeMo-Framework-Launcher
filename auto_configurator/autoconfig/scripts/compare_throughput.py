@@ -211,18 +211,18 @@ def main(cfg):
                 finally:
                     continue
 
-    result.sort(key=lambda x: x[15])
+    result.sort(key=lambda x: x[15]) # x[15] is time_per_step
     print(
         f"Top {min(output_top_n, len(result))} configs sorted from fastest to slowest:"
     )
     for i, res in enumerate(result):
-        print(f"Config #{i+1}: {res[-1]} with {res[14]:.4f}s per global step.")
+        print(f"Config #{i+1}: {res[-1]} with {res[15]:.4f}s per global step.") # fix a bug: change res[14] to res[15]
         if i + 1 == output_top_n:
             break
 
     top_config = f"{model_name}_{model_size}b_{nodes}nodes_tp_{result[0][3]}_pp_{result[0][4]}_cp_{result[0][5]}_ep_{result[0][6]}_mbs_{result[0][7]}_act_ckpt_{result[0][8]}_num_mbs_act_{result[0][9]}_act_per_pipe_{result[0][10]}"
     print("\n==================================================")
-    print(f"Optimal config: {top_config} with {result[0][14]:.4f}s per global step.")
+    print(f"Optimal config: {top_config} with {result[0][15]:.4f}s per global step.")
     print(
         f"Saving config to {final_result_logs}/optimal_config_{model_size}b_{nodes}nodes.yaml."
     )
